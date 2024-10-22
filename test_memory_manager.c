@@ -359,7 +359,6 @@ void test_resize_multithread(TestParams params)
             failures++;
         }
     }
-
     mem_deinit(); // Clean up the memory manager
 
     if (failures == 0)
@@ -387,15 +386,13 @@ void *alloc_exceeding_memory(void *arg)
 void test_exceed_single_allocation_multithread(TestParams params)
 {
     printf_yellow("  Testing \"allocation exceeding pool size\" (threads: %d) ---> ", params.num_threads);
-
     pthread_t threads[params.num_threads];
     size_t size_to_allocate = 2048; // Each thread will try to allocate 2KB
 
     mem_init(1024); // Initialize with 1KB of memory, intentionally less than required per thread
-
     // Create threads that will each try to allocate more memory than available
     for (int i = 0; i < params.num_threads; i++)
-    {
+    {     
         if (pthread_create(&threads[i], NULL, alloc_exceeding_memory, (void *)size_to_allocate) != 0)
         {
             perror("Failed to create thread");
@@ -467,7 +464,7 @@ void test_exceed_cumulative_allocation_multithread(TestParams params)
     thread_data_t thread_data[params.num_threads];
     mem_init(params.memory_size); // Initialize with 1KB of memory
 
-    // Create threads that will attempt to allocate memory
+    // Create threads that will attempt to allocate memoryhttps://bth.instructure.com/courses/5880/assignments/51460#
     for (int i = 0; i < params.num_threads; i++)
     {
         thread_data[i].thread_id = i;
@@ -943,8 +940,9 @@ int main(int argc, char *argv[])
         testAcrossConfigurations(test_resize_multithread, (TestParams){.memory_size = 1024});
         testAcrossConfigurations(test_exceed_single_allocation_multithread, (TestParams){.memory_size = 1024});
 
+        printf("Here I am\n");
         for (int i = 1; i < 6; i++)
-            test_exceed_cumulative_allocation_multithread((TestParams){.num_threads = pow(2, i), .memory_size = pow(2, 11 + i)});
+            // test_exceed_cumulative_allocation_multithread((TestParams){.num_threads = pow(2, i), .memory_size = pow(2, 11 + i)});
         break;
         testAcrossConfigurations(test_memory_overcommit_multithread, (TestParams){.memory_size = 1024});
         testAcrossConfigurations(test_repeated_fit_reuse_multithread, (TestParams){.iterations = 1});
@@ -956,11 +954,11 @@ int main(int argc, char *argv[])
         printf("\n*** Scalability testing: ***\n");
 
         printf("Testing mem_alloc and mem_free\n");
-
         for (int i = 1; i < 4; i++)
         {
             for (int j = 1; j < 5; j++)
             {
+                getchar();
                 run_concurrent_test(test_alloc_and_free, (TestParams){.num_threads = i, .memory_size = pow(2, 9 + j)}, "mem_alloc and mem_free");
             }
         }
