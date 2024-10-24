@@ -940,9 +940,8 @@ int main(int argc, char *argv[])
         testAcrossConfigurations(test_resize_multithread, (TestParams){.memory_size = 1024});
         testAcrossConfigurations(test_exceed_single_allocation_multithread, (TestParams){.memory_size = 1024});
 
-        printf("Here I am\n");
         for (int i = 1; i < 6; i++)
-            // test_exceed_cumulative_allocation_multithread((TestParams){.num_threads = pow(2, i), .memory_size = pow(2, 11 + i)});
+            test_exceed_cumulative_allocation_multithread((TestParams){.num_threads = pow(2, i), .memory_size = pow(2, 11 + i)});
         break;
         testAcrossConfigurations(test_memory_overcommit_multithread, (TestParams){.memory_size = 1024});
         testAcrossConfigurations(test_repeated_fit_reuse_multithread, (TestParams){.iterations = 1});
@@ -958,7 +957,6 @@ int main(int argc, char *argv[])
         {
             for (int j = 1; j < 5; j++)
             {
-                getchar();
                 run_concurrent_test(test_alloc_and_free, (TestParams){.num_threads = i, .memory_size = pow(2, 9 + j)}, "mem_alloc and mem_free");
             }
         }
